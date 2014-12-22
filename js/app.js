@@ -14,7 +14,7 @@
 $('document').ready(function() {
 
     $('#map').height($(window).height() - $('#map').position().top - 20);
-    
+
     var mapElem = document.getElementById('map');
 
     var center = {
@@ -37,16 +37,14 @@ $('document').ready(function() {
             cameras.forEach(function(cameras) {
                 var marker = new google.maps.Marker({
                     position: {
-                        lat: Number(cameras.location.latitude),
-                        lng: Number(cameras.location.longitude)
-                    },
-                    map: map,
-                    icon: 'img/recorder.svg'
+                        lat: parseFloat(cameras.location.latitude),
+                        lng: parseFloat(cameras.location.longitude)
+                    }
                 });
-                markers.push(marker);
 
                 google.maps.event.addListener(marker, 'click', function() {
                     map.panTo(this.getPosition());
+                    map.panBy(0,-100);
                     var html = '<p>' + cameras.cameralabel + '</p>';
                     html += '<img src="' + cameras.imageurl.url + '"/>';
                     infoWindow.setContent(html);
@@ -56,6 +54,8 @@ $('document').ready(function() {
                 google.maps.event.addListener(map, 'click', function() {
                     infoWindow.close();
                 });
+
+                markers.push(marker);
 
                 $('#search').bind('search keyup', function() {
                     var cameraName = cameras.cameralabel.toLowerCase();
@@ -67,6 +67,8 @@ $('document').ready(function() {
                     }
                 });
             });
+
+            var markerCluster = new MarkerClusterer(map, markers);
         })
         .fail(function(err) {
             console.log(err);
