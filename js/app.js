@@ -31,7 +31,7 @@ $('document').ready(function() {
     var cameras;
     var markers = [];
 
-    $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
+    $.getJSON('https://data.seattle.gov/resource/65fc-btcc.json')
         .done(function(data) {
             cameras = data;
             cameras.forEach(function(cameras) {
